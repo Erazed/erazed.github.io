@@ -1,0 +1,208 @@
+<!DOCTYPE HTML>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Flappy Square</title>
+    <style>
+    * {
+        padding: 0;
+        margin: 0;
+    }
+    
+    canvas {
+        background: #eee;
+        display: block;
+        margin: 0 auto;
+    }
+    </style>
+</head>
+
+<body>
+    <canvas id="gameCanvas" width="480" height="320"></canvas>
+    <script>
+    var canvas = document.getElementById("gameCanvas");
+    var context = canvas.getContext("2d");
+
+    var paused = false;
+    var pauseTimer = 0;
+    var pauseTime = 50;
+
+    var z = canvas.height / 2;
+    var dz = 0;
+    var maxDz = -8;
+    var gravity = 0.5;
+
+    var playerWidth = 20;
+    var playerX = 20;
+
+    var pressTimer = 0;
+
+    var zMin = 0;
+    var zMax = canvas.height - playerWidth;
+
+    var speed = 4;
+
+    var obstacleWidth = 20;
+    var obstacleSpawnDistance = 200;
+    var obstacleGap = 100;
+    var obstacles = [];
+
+    var score = 0;
+    var best = 0;
+
+    addEventListener("keydown", moveUp);
+
+    function moveUp() {
+        if(pauseTimer > pauseTime) {
+            pauseTimer = 0;
+            paused = false;
+        }
+        if (pressTimer > 5) {
+            dz = maxDz;
+            pressTimer = 0;
+        }
+    }
+
+    function movePlayer() {
+            z += dz;
+            dz += gravity;
+    }
+
+    function addObstacle() {
+        var farRight = 0;
+        for (var i = 0; i < obstacles.length; i++) {
+            if (obstacles[i].x > farRight) {
+                farRight = obstacles[i].x;
+            }
+            if (obstacles[i].x < -100) {
+                obstacles.splice(i, 1);
+            }
+            if (obstacles[i].x === 0) {
+                obstacles.splice(i, 1);
+                score++;
+            }
+        }
+        if (canvas.width - farRight > obstacleSpawnDistance) {
+            var newObstacle = {
+                x: canvas.width,
+                height: Math.random() * (canvas.height - obstacleGap)
+            }
+            obstacles.push(newObstacle);
+        }
+    }
+
+    function drawObstacles() {
+        for (var i = 0; i < obstacles.length; i++) {
+            drawObstacle(obstacles[i]);
+        }
+    }
+
+    function drawObstacle(obstacle) {
+        //upper
+        context.beginPath();
+        context.rect(obstacle.x, 0, obstacleWidth, obstacle.height);
+        context.fillStyle = "#00cf00";
+        context.fill();
+        context.closePath();
+
+        //lower
+        context.beginPath();
+        context.rect(obstacle.x, obstacle.height + obstacleGap, obstacleWidth, canvas.height - (obstacle.height + obstacleGap));
+        context.fillStyle = "#00cf00";
+        context.fill();
+        context.closePath();
+    }
+
+    function moveObstacles() {
+        for (var i = 0; i < obstacles.length; i++) {
+            obstacles[i].x -= speed;
+        }
+    }
+
+    function drawPlayer() {
+        context.beginPath();
+        context.rect(playerX, z, playerWidth, playerWidth);
+        context.fillStyle = "#ffa500";
+        context.fill();
+        context.closePath();
+    }
+
+    function drawScore() {
+        context.font = "30px calibri";
+        context.textAlign = "center";
+        context.fillText(score, canvas.width/2, 30);
+    }
+
+    function checkCollisions() {
+        for (var i = 0; i < obstacles.length; i++) {
+            if(obstacles[i].x > 0 && obstacles[i].x < playerX + playerWidth) {
+                if(z < obstacles[i].height || z + playerWidth > obstacles[i].height + obstacleGap) {
+                    reset();
+                }
+            }
+        }
+    }
+
+    function reset() {
+        if (score > best) {
+            best = score;
+        }
+        context.beginPath();
+        context.rect(0, 0, canvas.width, canvas.height);
+        var gradient=context.createRadialGradient(playerX+playerWidth/2,z+playerWidth/2,playerWidth,playerX+playerWidth/2,z+playerWidth/2,playerWidth*2);
+        gradient.addColorStop(0,"rgba(255,0,0,0)");
+        gradient.addColorStop(0.5,"rgba(255,0,0,0.3)");
+        context.fillStyle = gradient;
+        context.fill();
+        context.closePath();
+
+        context.font = "80px calibri";
+        context.textAlign = "center";
+        context.fillStyle = "#000000"
+        context.fillText("Score: " + score, canvas.width/2, canvas.height/2);
+
+        drawClickToStart();
+
+        paused = true;
+        z = canvas.height / 2
+        score = 0;
+        obstacles = [];
+        addObstacle();
+    }
+
+    function drawClickToStart() {
+        context.font = "30px calibri";
+        context.textAlign = "center";
+        context.fillStyle = "#000000";
+        context.fillText("Highscore: " + best, canvas.width/2, canvas.height/2+50)
+        context.fillText("Press any button to flap!", canvas.width/2, canvas.height/2+80);
+    }
+
+    function draw() {
+        if(paused) {
+            pauseTimer++;
+        } else {
+        context.clearRect(0, 0, canvas.width, canvas.height);
+
+        addObstacle();
+        moveObstacles();
+        drawObstacles();
+        movePlayer();
+        drawPlayer();
+        
+        drawScore();
+
+        checkCollisions();
+
+        pressTimer += 1;
+        } 
+    }
+    draw();
+    drawClickToStart()
+    paused = true;
+    setInterval(draw, 20);
+    </script>
+</body>
+
+</html>
