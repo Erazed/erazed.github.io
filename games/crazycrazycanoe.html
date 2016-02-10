@@ -1,0 +1,391 @@
+<!DOCTYPE HTML>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Crazy Crazy Canoe</title>
+    <style>
+    * {
+        padding: 0;
+        margin: 0;
+    }
+    
+    canvas {
+        background: #eee;
+        display: block;
+        margin: 0 auto;
+    }
+    </style>
+</head>
+
+<body>
+    <canvas id="gameCanvas" width="480" height="320"></canvas>
+    <script>
+    var canvas = document.getElementById("gameCanvas");
+    var ctx = canvas.getContext("2d");
+    var colours = ["#FF0000", "#00FF00", "#0000FF", "#FFFF00", "#FF00FF", "#00FFFF"];
+
+    var canoeWidth = 6;
+    var canoeLength = 60;
+
+    var startX = 10;//canoeLength / 2;
+    var startY = canvas.height - (canoeLength / 2 + 10);
+
+    var canoeX = startX;
+    var canoeY = startY;
+
+    var canoeTheta = 0;
+    var canoeThetaPerTick = Math.PI / 120;
+
+    var canoeSpeed = 2;
+    var sqrtCanoeSpeed = Math.sqrt(canoeSpeed);
+
+    var goalBuffer = 5;
+    var goalSize = canoeLength + goalBuffer * 2;
+    var goalCornerOffset = 5;
+
+    var level = {
+        topwall: {
+            x: 0,
+            y: 0,
+            w: canvas.width,
+            h: 5,
+            colour: colours[0]
+        },
+        leftwall: {
+            x: 0,
+            y: 0,
+            w: 5,
+            h: canvas.height,
+            colour: colours[0]
+        },
+        rightwall: {
+            x: canvas.width - 5,
+            y: 0,
+            w: 5,
+            h: canvas.height,
+            colour: colours[0]
+        },
+        bottomwall: {
+            x: 0,
+            y: canvas.height - 5,
+            w: canvas.width,
+            h: 5,
+            colour: colours[0]
+        },
+        0: {
+            x: 100,
+            y: 100,
+            w: 100,
+            h: 100,
+            colour: colours[0]
+        },
+        1: {
+            x: 200,
+            y: 20,
+            w: 50,
+            h: 50,
+            colour: colours[0]
+        },
+        2: {
+            x: 250,
+            y: 100,
+            w: 50,
+            h: 50,
+            colour: colours[0]
+        },
+        3: {
+            x: 200,
+            y: 150,
+            w: 200,
+            h: 25,
+            colour: colours[0]
+        },
+        4: {
+            x: 300,
+            y: 20,
+            w: 50,
+            h: 50,
+            colour: colours[0]
+        },
+        5: {
+            x: 400,
+            y: 0,
+            w: 50,
+            h: 120,
+            colour: colours[0]
+        },
+        6: {
+            x: 400,
+            y: 210,
+            w: 80,
+            h: 25,
+            colour: colours[0]
+        }, 
+        7: {
+            x: 0,
+            y: 220,
+            w: 30,
+            h: 30,
+            colour: colours[0]
+        },
+        8: {
+            x: 60,
+            y: 80,
+            w: 50,
+            h: 50,
+            colour: colours[0]
+        },
+        9: {
+            x: 80,
+            y: 60,
+            w: 30,
+            h: 30,
+            colour: colours[0]
+        },
+        10: {
+            x: 380,
+            y: 255,
+            w: 20,
+            h: 20,
+            colour: colours[0]
+        },
+        11: {
+            x: 150,
+            y: 230,
+            w: 90,
+            h: 90,
+            colour: colours[0]
+        }
+    };
+
+    function getCanoeCenterX() {
+        return canoeX + canoeLength / 2;
+    }
+
+    function getCanoeCenterY() {
+        return canoeY + canoeWidth / 2;
+    }
+
+    function drawCanoe() {
+        ctx.save();
+        ctx.beginPath();
+        ctx.translate(getCanoeCenterX(), getCanoeCenterY());
+        ctx.rotate(canoeTheta);
+        ctx.rect(-canoeWidth / 2, -canoeLength / 2, canoeWidth, canoeLength);
+        ctx.fillStyle = "rgba(0, 0, 0, 0.7)";
+        ctx.fill();
+        ctx.closePath();
+        ctx.restore();
+    }
+
+    function drawGoal() {
+        ctx.beginPath();
+        ctx.rect(canvas.width - goalSize - goalCornerOffset, canvas.height - goalSize - goalCornerOffset, goalSize, goalSize);
+        ctx.fillStyle = "#00FF00";
+        ctx.fill();
+        ctx.closePath();
+    }
+
+    function drawPlayArea() {
+        for (var key in level) {
+            var box = level[key];
+            ctx.beginPath();
+            ctx.rect(box.x, box.y, box.w, box.h);
+            ctx.fillStyle = box.colour;
+            ctx.fill();
+            ctx.closePath();
+        };
+    }
+
+    function checkGoal() {
+        var x = getCanoeCenterX();
+        var y = getCanoeCenterY();
+
+        var goalx = canvas.width - goalCornerOffset - goalSize / 2;
+        var goaly = canvas.height - goalCornerOffset - goalSize / 2;
+
+        if (x - goalx < goalBuffer - 1 && goalx - x < goalBuffer - 1) {
+            if (y - goaly < goalBuffer - 1 && goaly - y < goalBuffer - 1) {
+                console.log("x,y " + x + " " + y);
+                console.log("goalx,goaly " + goalx + " " + goaly);
+                alert("Victory");
+                document.location.reload();
+            }
+        }
+
+        ctx.beginPath();
+        ctx.rect(x - 3, y - 3, 6, 6);
+        ctx.fillStyle = "#FFFF00";
+        ctx.fill();
+        ctx.closePath();
+
+        ctx.beginPath();
+        ctx.rect(goalx - (goalBuffer - 1), goaly - (goalBuffer - 1), 2 * goalBuffer, 2 * goalBuffer);
+        ctx.fillStyle = "#FFFF00";
+        ctx.fill();
+        ctx.closePath();
+
+    }
+
+    function checkCollision() {
+
+        var centerX = getCanoeCenterX();
+        var centerY = getCanoeCenterY();
+        var vertex1 = {
+            x: centerX - canoeLength / 2 * Math.sin(-canoeTheta),
+            y: centerY - canoeLength / 2 * Math.cos(-canoeTheta)
+        };
+        var vertex2 = {
+            x: 2 * centerX - vertex1.x,
+            y: 2 * centerY - vertex1.y
+        };
+        canoeHitLine = {
+            vertex1: vertex1,
+            vertex2: vertex2
+        };
+
+        ctx.beginPath();
+        ctx.arc(canoeHitLine.vertex1.x, canoeHitLine.vertex1.y, 3, 0, Math.PI * 2);
+        //ctx.rect(canoeHitLine.vertex1.x - 3, canoeHitLine.vertex1.y - 3, 6, 6);
+        ctx.fillStyle = "#00FF00";
+        ctx.fill();
+        ctx.closePath();
+
+        ctx.beginPath();
+        ctx.arc(canoeHitLine.vertex2.x, canoeHitLine.vertex2.y, 3, 0, Math.PI * 2);
+        //ctx.rect(canoeHitLine.vertex2.x - 3, canoeHitLine.vertex2.y - 3, 6, 6);
+        ctx.fillStyle = "#FF00FF";
+        ctx.fill();
+        ctx.closePath();
+
+        for (var key in level) {
+            var box = level[key];
+            var vertices = [{
+                x: box.x,
+                y: box.y
+            }, {
+                x: box.x + box.w,
+                y: box.y
+            }, {
+                x: box.x + box.w,
+                y: box.y + box.h
+            }, {
+                x: box.x,
+                y: box.y + box.h
+            }];
+            for (var k = 0; k < vertices.length; k++) {
+                var boxVertex1 = vertices[k];
+                var boxVertex2 = vertices[(k == 3 ? 0 : k + 1)];
+
+                var boxHitLine = {
+                    vertex1: boxVertex1,
+                    vertex2: boxVertex2
+                }
+
+                if (isIntersect(canoeHitLine, boxHitLine)) {
+                    canoeX = startX;
+                    canoeY = startY;
+                    canoeTheta = 0;
+                };
+            };
+        };
+    }
+
+    function isIntersect(canoeLine, boxLine) {
+        var p1 = canoeLine.vertex1;
+        var p2 = canoeLine.vertex2;
+        var p3 = boxLine.vertex1;
+        var p4 = boxLine.vertex2;
+        return (CCW(p1, p3, p4) != CCW(p2, p3, p4)) && (CCW(p1, p2, p3) != CCW(p1, p2, p4));
+    }
+
+    function CCW(p1, p2, p3) {
+        a = p1.x;
+        b = p1.y;
+        c = p2.x;
+        d = p2.y;
+        e = p3.x;
+        f = p3.y;
+        return (f - b) * (c - a) > (d - b) * (e - a);
+    }
+
+
+    var rightPressed = false;
+    var leftPressed = false;
+    var upPressed = false;
+    var downPressed = false;
+
+    document.addEventListener("keydown", keyDownHandler, false);
+    document.addEventListener("keyup", keyUpHandler, false);
+
+    function keyDownHandler(event) {
+        switch (event.keyCode) {
+            case 37:
+                leftPressed = true;
+                break;
+
+            case 39:
+                rightPressed = true;
+                break;
+
+            case 38:
+                upPressed = true;
+                break;
+
+            case 40:
+                downPressed = true;
+                break;
+        }
+    }
+
+    function keyUpHandler(event) {
+        switch (event.keyCode) {
+            case 37:
+                leftPressed = false;
+                break;
+
+            case 39:
+                rightPressed = false;
+                break;
+
+            case 38:
+                upPressed = false;
+                break;
+
+            case 40:
+                downPressed = false;
+                break;
+        }
+    }
+
+    function moveCanoe() {
+        if (leftPressed) {
+            upPressed || downPressed ? canoeX -= sqrtCanoeSpeed : canoeX -= canoeSpeed;
+        };
+        if (rightPressed) {
+            upPressed || downPressed ? canoeX += sqrtCanoeSpeed : canoeX += canoeSpeed;
+        };
+        if (upPressed) {
+            leftPressed || rightPressed ? canoeY -= sqrtCanoeSpeed : canoeY -= canoeSpeed;
+        };
+        if (downPressed) {
+            leftPressed || rightPressed ? canoeY += sqrtCanoeSpeed : canoeY += canoeSpeed;
+        };
+    }
+
+    function draw() {
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+        drawPlayArea();
+        drawGoal();
+        moveCanoe();
+        drawCanoe();
+        checkCollision();
+        checkGoal();
+        canoeTheta += canoeThetaPerTick;
+    }
+    setInterval(draw, 20);
+    </script>
+</body>
+
+</html>
