@@ -1,0 +1,39 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <style type="text/css">
+    * {
+        padding: 0;
+        margin: 0;
+    }
+    
+    canvas {
+        background: #eee;
+        display: block;
+        margin: 0 auto;
+    }
+    </style>
+    <title>Gravity Simulator</title>
+    <script src="gravity.js"></script>
+    <script type="text/javascript">
+    	window.addEventListener("load", windowLoadHandler, false);
+
+    	function windowLoadHandler() {
+        	gravitySimulator();
+    	}
+    </script>
+</head>
+
+<body>
+    <canvas id="canvas" width="1200" height="700" oncontextmenu="return false;">
+        Your browser does not support HTML5 canvas.
+    </canvas>
+    <button id="addSolarSystemButton" type="button">Add Solar System</button>
+    <button id="clearButton" type="button">Clear</button>
+    </div>
+    </div>
+</body>
+
+</html>
