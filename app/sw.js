@@ -39,3 +39,33 @@ self.addEventListener('push', function(event) {
             tag: 'my-tag'
         }));
 });
+
+self.addEventListener('notificationclick', function(event) {
+	console.log('Event:', event);
+    console.log('Notification click: tag', event.notification.tag);
+    // Android doesn't close the notification when you click it
+    // See http://crbug.com/463146
+    event.notification.close();
+    var url = 'images/icon.png';
+    // Check if there's already a tab open with this URL.
+    // If yes: focus on the tab.
+    // If no: open a tab with the URL.
+    event.waitUntil(
+        clients.matchAll({
+            type: 'window'
+        })
+        .then(function(windowClients) {
+            console.log('WindowClients', windowClients);
+            for (var i = 0; i < windowClients.length; i++) {
+                var client = windowClients[i];
+                console.log('WindowClient', client);
+                if (client.url === url && 'focus' in client) {
+                    return client.focus();
+                }
+            }
+            if (clients.openWindow) {
+                return clients.openWindow(url);
+            }
+        })
+    );
+});
