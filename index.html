@@ -5,7 +5,7 @@
 	<meta charset="utf-8">
 	<title>Tom Rycroft</title>
 
-	<link rel="stylesheet" media="screen" href="style.css">
+	<link rel="stylesheet" media="screen" href="css/style.css">
 
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
 	<meta name="author" content="Tom Rycroft">
@@ -19,33 +19,32 @@
 
 <body>
 	<div class="page-wrapper">
-		<section class="intro" id="intro">
-			<h1>I&#8217;m Tom Rycroft</h1>
-			<h3>This is my portfolio</h2>
-		</section>
 		<header>
-			<ul class="navigation">
-				<li>
-					<a href="#bio">Me</a>
-				</li>
-				<li>
-					<a href="#projects">Projects</a>
-				</li>
-				<li>
-					<a href="#follow">Social</a>
-				</li>
-			</ul>
+			<a href="#intro">Me</a>
+			<a href="#bio">Me</a>
+			<a href="#projects">Projects</a>
+			<a href="#follow">Social</a>
 		</header>
+		<footer>
+			<a href="https://github.com/Erazed" title="See my dead repositories!" class="github">GitHub</a>
+			<a href="https://www.linkedin.com/in/tom-rycroft-0720a2156/" title="Social media is lame!" class="linkedin">LinkedIn</a>
+			<a href="https://www.dwitter.net/u/Erazed" title="JavaScript can be beautiful!" class="dwitter">Dwitter</a>
+		</footer>
 		<div class="content-wrapper">
-			<section name="#bio" class="bio" id="bio" role="article">
-				<p>I&#8217;m Tom, a full time software engineer, part-time gamer, recreational weightlifter and occasional <abbr title="See: Infinite Monkey Theorem">web developer</abbr>.</p>
-				<p>This portfolio was <s>laboriously forged</s> lovingly crafted as means to improve my own knowledge of <abbr title="HyperText Markup Language">HTML</abbr> and <abbr title="Cascading Style Sheets">CSS</abbr>. I hope that as I write this page some amount
-					of the knowledge gleaned from furiously searching <i>favourite search engine here</i> and referencing <i>favourite developer crutch here</i> will be retained.</p>
+			<section name="#intro" class="intro" id="intro">
+				<div class="intro-left">
+					<span>I&#8217;m<br>Tom<br>Rycroft</h1></span>
+				</div>
+				<div class="intro-right">
+					<span>Full time software engineer<br>
+						Part-time gamer<br>
+						Recreational weightlifter<br>
+						Occasional <abbr title="See: Infinite Monkey Theorem">web developer</abbr></span>
+				</div>
 			</section>
-
 			<div name="#projects" class="projects" id="projects">
 				<section class="project" role="article">
-					<p>Test.</p>
+					<p>Test2.</p>
 				</section>
 				<section class="project" role="article">
 					<p>Test.</p>
@@ -53,13 +52,7 @@
 				<section class="project" role="article">
 					<p>Test.</p>
 				</section>
-		</div>
-
-			<footer>
-				<a href="https://github.com/Erazed" title="See my dead repositories!" class="github">GitHub</a>
-				<a href="https://www.dwitter.net/u/Erazed" title="JavaScript can be beautiful!" class="dwitter">Dwitter</a>
-				<a href="https://www.linkedin.com/in/tom-rycroft-0720a2156/" title="Social media is lame!" class="linkedin">LinkedIn</a>
-			</footer>
+			</div>
 		</div>
 
 		<aside class="sidebar">
@@ -71,32 +64,14 @@
 							<a href="/toys/gravitysimulator">Simulate Gravity!</a>
 						</li>
 						<li>
-							<a href="/toys/flappysquare">Play Flappy Square!</a>
+							<a href="/games/flappysquare">Play Flappy Square!</a>
 						</li>
 						<li>
-							<a href="/toys/crazycrazycanoe">Play CrazyCrazyCanoe!</a>
+							<a href="/games/crazycrazycanoe">Play CrazyCrazyCanoe!</a>
 						</li>
 					</ul>
 				</nav>
 			</div>
-
-			<div class="other" id="other-selection">
-				<h3>Some other links</h3>
-				<nav>
-					<ul>
-						<li>
-							<a href="">some</a>
-						</li>
-						<li>
-							<a href="">dead</a>
-						</li>
-						<li>
-							<a href="">links</a>
-						</li>
-					</ul>
-				</nav>
-			</div>
-
 		</aside>
 	</div>
 </body>

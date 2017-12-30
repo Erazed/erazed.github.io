@@ -1,0 +1,62 @@
+@font-face {
+  font-family: 'Akzidenz Grotesk Light';
+  font-style: normal;
+  font-weight: normal;
+  src: local('Akzidenz Grotesk Light'), url('fonts/akzidenz-grotesk-light.woff') format('woff');
+}
+
+@font-face {
+  font-family: 'Akzidenz Grotesk Bold';
+  font-style: normal;
+  font-weight: normal;
+  src: local('Akzidenz Grotesk Bold'), url('fonts/akzidenz-grotesk-bold.woff') format('woff');
+}
+
+body {
+  background-color: rgb(186, 38, 13);
+  font-family: Akzidenz Grotesk Light;
+  margin: 0;
+}
+
+header {
+  font-size: 1.5rem;
+  left: 0;
+  padding-right: 10px;
+  position: fixed;
+  right: 0;
+  text-align: right;
+  top: 0;
+}
+
+footer {
+  bottom: 0;
+  font-size: 1.5rem;
+  left: 0;
+  padding-right: 10px;
+  position: fixed;
+  right: 0;
+  text-align: right;
+}
+
+section {
+  height: 100vh;
+}
+
+.intro {
+  align-items: center;
+  display: flex;
+  justify-content: center;
+}
+
+.intro-left {
+  float: left;
+  font-family: Akzidenz Grotesk Bold;
+  font-size: 8rem;
+  text-align: right;
+}
+
+.intro-right {
+  display: flex;
+  font-size: 2rem;
+  padding-left: 10px;
+}
