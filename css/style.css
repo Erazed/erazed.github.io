@@ -83,20 +83,13 @@ section {
   color: white;
 }
 
-.barbell {
-  bottom: -200;
-  position: absolute;
-  top: -200;
-  width: 20vw;
-}
-
 .barbell-bar {
   background-color: black;
-  bottom: 0;
+  bottom: -200;
   display: block;
   margin-left: 5vw;
   position: fixed;
-  top: 0;
+  top: 200;
   width: 5vw;
   z-index: 2;
 }
