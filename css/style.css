@@ -85,11 +85,11 @@ section {
 
 .barbell-bar {
   background-color: black;
-  bottom: -200;
+  bottom: 0;
   display: block;
   margin-left: 5vw;
   position: fixed;
-  top: 200;
+  top: 0;
   width: 5vw;
   z-index: 2;
 }
