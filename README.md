@@ -1,2 +1,3 @@
 # erazed.github.io
-Stuff n Tingz
+My, Tom Rycroft, 's portfolio.
+[tomrycroft.com]
