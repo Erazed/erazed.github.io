@@ -110,6 +110,44 @@ section {
   z-index: 3;
 }
 
+@keyframes slideDown {
+  from {
+    transform: translate3d(0, -30vh, 0);
+    visibility: visible;
+  }
+  to {
+    transform: translate3d(0, 0, 0);
+  }
+}
+
+@keyframes slideUp {
+  from {
+    transform: translate3d(0, 30vh, 0);
+    visibility: visible;
+  }
+  to {
+    transform: translate3d(0, 0, 0);
+  }
+}
+
+.plate-down {
+  animation-duration: 0.5s;
+  animation-fill-mode: both;
+  animation-name: slideDown;
+}
+
+.order1 {
+  animation-delay: 0s;
+}
+
+.order2 {
+  animation-delay: 0.5s;
+}
+
+.order3 {
+  animation-delay: 1s;
+}
+
 .barbell-plate {
   background-color: white;
   height: 4.5vw;
