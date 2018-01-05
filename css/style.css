@@ -54,29 +54,76 @@ section {
   height: 100vh;
 }
 
-.content-wrapper {}
-
-.project {
+.content-wrapper {
   margin-left: 10vw;
 }
+
+.project {}
 
 .intro {
   align-items: center;
   display: flex;
   justify-content: center;
+  padding: 0 1rem;
 }
 
 .intro-left {
   float: left;
   font-family: Akzidenz Grotesk Bold, Helvetica, Arial, sans-serif;
-  font-size: 8rem;
+  font-size: 12rem;
   text-align: right;
 }
 
 .intro-right {
   display: flex;
-  font-size: 2rem;
-  padding-left: 10px;
+  font-size: 3rem;
+  padding-left: 2rem;
+}
+
+@media screen and (max-width:1440px) {
+  .intro-left {
+    font-size: 8rem;
+  }
+  .intro-right {
+    font-size: 2rem;
+  }
+}
+
+@media screen and (max-width:920px) {
+  .intro {
+    flex-direction: column;
+  }
+  .intro-left {
+    text-align: center;
+  }
+  .intro-right {
+    padding-left: 0;
+    text-align: center;
+  }
+}
+
+@media screen and (max-width:600px) {
+  .intro-left {
+    font-size: 6rem;
+  }
+  .intro-right {
+    font-size: 1.5rem;
+  }
+  nav a {
+    font-size: 1.25rem;
+  }
+}
+
+@media screen and (max-width:400px) {
+  .intro-left {
+    font-size: 4rem;
+  }
+  .intro-right {
+    font-size: 1.25rem;
+  }
+  nav a {
+    font-size: 1rem;
+  }
 }
 
 .white {
