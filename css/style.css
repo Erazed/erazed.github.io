@@ -14,8 +14,11 @@
 
 body {
   background-color: rgb(186, 38, 13);
+  box-sizing: border-box;
   font-family: Akzidenz Grotesk Light, Helvetica, Arial, sans-serif;
   margin: 0;
+  max-width: 100%;
+  overflow-x: hidden;
 }
 
 nav a {
@@ -51,11 +54,23 @@ footer {
 }
 
 section {
-  height: 100vh;
+  align-items: center;
+  display: block;
+  min-height: 100vh;
+  padding: 1rem;
+  padding-left: calc(10vw + 1rem);
+  position: relative;
+}
+
+section.left {}
+
+.block {
+  display: block;
 }
 
 .content-wrapper {
-  margin-left: 10vw;
+  display: flex;
+  flex-direction: column;
 }
 
 .project {}
@@ -79,7 +94,8 @@ section {
   align-items: center;
   display: flex;
   justify-content: center;
-  padding: 0 1rem;
+  padding: 0;
+  padding-left: 10vw;
 }
 
 .intro-left {
@@ -91,8 +107,17 @@ section {
 
 .intro-right {
   display: flex;
+  flex-direction: column;
   font-size: 3rem;
   padding-left: 2rem;
+}
+
+.section-1 {
+  background-color: rgb(202, 47, 51);
+}
+
+.section-2 {
+  background-color: rgb(177, 46, 64);
 }
 
 @media screen and (max-width:1440px) {
@@ -143,6 +168,8 @@ section {
 
 .white {
   color: white;
+  display: inline-block;
+  position: relative;
 }
 
 .barbell-bar {
@@ -174,7 +201,7 @@ section {
 
 @keyframes slideDown {
   from {
-    transform: translate3d(0, -30vh, 0);
+    transform: translate3d(0, -50vh, 0);
     visibility: visible;
   }
   to {
@@ -192,10 +219,42 @@ section {
   }
 }
 
+@keyframes slideLeft {
+  from {
+    transform: translate3d(70vw, 0, 0);
+    visibility: visible;
+  }
+  to {
+    transform: translate3d(0, 0, 0);
+  }
+}
+
+@keyframes slideRight {
+  from {
+    transform: translate3d(-50vw, 0, 0);
+    visibility: visible;
+  }
+  to {
+    transform: translate3d(0, 0, 0);
+  }
+}
+
 .plate-down {
-  animation-duration: 0.5s;
+  animation-duration: 0.8s;
   animation-fill-mode: both;
   animation-name: slideDown;
+}
+
+.slide-right {
+  animation-duration: 0.8s;
+  animation-fill-mode: both;
+  animation-name: slideRight;
+}
+
+.slide-left {
+  animation-duration: 0.8s;
+  animation-fill-mode: both;
+  animation-name: slideLeft;
 }
 
 .order1 {
@@ -210,6 +269,10 @@ section {
   animation-delay: 1s;
 }
 
+.order4 {
+  animation-delay: 1.5s;
+}
+
 .barbell-plate {
   background-color: white;
   height: 4.5vw;
@@ -221,4 +284,12 @@ section {
 
 .barbell-plate:last-child {
   margin-bottom: 2vw;
+}
+
+.contact {
+  display: block;
+  padding: 3.6rem;
+  position: relative;
+  padding-left: calc(10vw + 3.6rem);
+  text-align: center;
 }
