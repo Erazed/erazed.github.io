@@ -62,6 +62,11 @@ section {
   position: relative;
 }
 
+.right-left {
+  display: inline-flex;
+  flex-direction: row-reverse;
+}
+
 section.left {}
 
 .block {
@@ -71,6 +76,11 @@ section.left {}
 .content-wrapper {
   display: flex;
   flex-direction: column;
+}
+
+.projects-link:hover ~ #projects-header{
+  color:black;
+
 }
 
 .project {}
